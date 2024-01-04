@@ -1,0 +1,168 @@
+
+
+
+/* 좌석 예약 form은 detailedTime 버튼을 눌렀을 때만 보여야하기 때문에 숨기기*/ 
+#reservation-form{
+    display: none;
+}
+
+
+.seat {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+    background-image: url('https://i.imgur.com/FsxQxYA.png');
+    background-size: cover;
+    background-position: center; 
+}
+
+
+.seat.selected {
+    background-image: url('https://i.imgur.com/UrpbYcb.png');
+}
+
+
+.seat.reserved {
+    background-image: url('https://i.imgur.com/UrpbYcb.png');
+    cursor: not-allowed; 
+}
+
+.selected-station {
+    color: red; 
+}
+
+.reserved {
+    background-image: url('https://i.imgur.com/UrpbYcb.png');
+    /* cursor: not-allowed; /* 예약된 좌석은 클릭이 불가능해야 함 */
+}
+
+#seat-map {
+    text-align: center;
+}
+
+.seat-number {
+font-weight: bold; 
+}
+
+/* 시간 선택 내비게이션 바 */
+#timeNav {
+    display: flex;
+    overflow-x: auto; /* 가로 스크롤을 활성화 */
+    white-space: nowrap; /* 버튼들을 한 줄에 표시 */
+    -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤을 위함 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+    -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨김 */
+}
+
+.timeBtn {
+    flex: none; /* 버튼 크기 고정 */
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.timeBtn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Chrome, Safari 등의 웹킷 기반 브라우저에서 스크롤바 숨김 */
+#timeNav::-webkit-scrollbar {
+    display: none; }
+
+.timeBtn.selected{
+    color:red
+}
+
+/* 세부 시간 timeNav */
+.timeNav {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.timeNav::-webkit-scrollbar {
+    display: none;
+}
+
+/* 탑승정류장 */
+#boarding-station {
+    display: flex;
+    overflow-x: auto; /* 가로 스크롤 활성화 */
+    flex-wrap: nowrap; /* 요소들을 한 줄에만 나타나게 함 */
+    white-space: nowrap; /* 버튼들을 한 줄에 표시 */
+    -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤을 위함 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+    -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨김 */
+}
+
+.station-btn {
+    flex: none;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+#boarding-station::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* 하차 정류장 --------------------------------------------------*/
+
+#arrival-station{
+    display: flex;
+    overflow-x: auto; /* 가로 스크롤 활성화 */
+    flex-wrap: nowrap; /* 요소들을 한 줄에만 나타나게 함 */
+    white-space: nowrap; /* 버튼들을 한 줄에 표시 */
+    -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤을 위함 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+    -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨김 */
+}
+
+.arrival-station::-webkit-scrollbar{
+    display: none;
+}
+
+#arrival-station::-webkit-scrollbar {
+    display: none;
+}
+/* 하차 정류장 --------------------------------------------------*/
+
+.detailedTimeBtn {
+    flex: none;
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.detailedTimeBtn:hover {
+    background-color: #e0e0e0;
+}
+
+/* 00시 00분 버스 */
+.centered-container {
+    text-align: center; /* 가운데 정렬 */
+}
+
+
+
+form {
+    max-width: 500px; /* 최대 너비 설정 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+

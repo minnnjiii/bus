@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title> 누리 광장  </title>
+    <style>
+      .grey-bg {
+        background-color: #f9f9f9; 
+      }
+      .white-bg {
+          background-color: #f9f9f9;
+          padding: 20px;
+      }
+      .list-box {
+          background-color: #ffffff;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 15px;
+          margin-bottom: 10px;
+          position: relative;
+      }
+      .list-box h4 {
+          margin: 0 0 10px 0;
+          color: #003478; 
+          font-size: 1.2em;
+      }
+      .list-box h4 a {
+          text-decoration: none;
+          color: #003478;
+      }
+      .list-box h4 a:hover {
+          text-decoration: underline;
+      }
+      .list-box .actions {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+      }
+      .list-box .actions a {
+          color: #003478;
+          text-decoration: none;
+          font-size: 1.2em;
+          margin-left: 10px;
+      }
+      .list-box .author {
+          display: block;
+          margin-bottom: 5px;
+          color: #888;
+          font-size: 0.9em;
+      }
+      .list-box p {
+          color: #555;
+          margin: 0;
+      }
+      .editIcon, .deleteIcon {
+          cursor: pointer;
+      }
+  </style>
+    
+
+</head>
+<body  class = "grey-bg" >     
+  <%- include('commonNav.ejs') %>
+
+
+  
+  <div class="d-flex justify-content-end mt-2" style=" right: 0; margin: 20px;">
+    <button type="button" class="btn btn-primary">
+        <a href="/community/write" style="text-decoration: none; color: black;"> 작성 </a>
+    </button>
+  </div> 
+  
+    
+  <div class="white-bg">
+    <% for (let i = 0; i < 글목록.length; i++) { %>
+        <div class="list-box">
+          <span class="author"><%= 글목록[i].name %></span>
+            <h4>
+                <a href="/community/detail/<%= 글목록[i]._id %>"><%= 글목록[i].title %></a>
+            </h4>
+            <div class="actions">
+                <a href="/community/edit/<%= 글목록[i]._id %>" class="editIcon">✏️</a>
+                <span class="deleteIcon" data-id="<%= 글목록[i]._id %>">🗑️</span>
+            </div>
+            
+            <p><%= 글목록[i].content %></p>
+        </div>
+    <% } %>
+</div>
+
+  <div style="display: flex; justify-content: center;">
+    <% if (글목록.length > 0) { %>
+        <a href="/community?lastId=<%= 글목록[글목록.length - 1]._id %>" style="text-decoration: none; color: black;"> 다음 페이지 ▶</a>
+    <% } %>
+  </div>
+  
+  <script>
+
+    for(let i =0; i <'<%= 글목록.length %>'; i++){
+      // class = "delete" 가진 html 중 i번째 찾기
+      document.querySelectorAll('.deleteIcon')[i]
+      .addEventListener('click',function(e){
+        
+        fetch('/delete?docid=' + e.target.dataset.id,{
+          method : 'DELETE'
+        })
+        .then((r)=>r.text())
+        .then((r)=>{ console.log(r)})
+          e.target.parentElement.parentElement.style.display = 'none'      })
+    }
+    
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

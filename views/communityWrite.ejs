@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>누리 광장</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+        .form-box {
+            background: white;
+            padding: 25px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 90%; /* 화면의 90% 크기로 설정 */
+            max-width: 500px; /* 최대 가로 길이 설정 */
+        }
+
+        /* 화면의 너비가 500px보다 큰 경우에만 max-width를 90%로 설정 */
+        @media (min-width: 556px) { /* 500px + 2 * 20px(좌우 마진) + 2 * 8px(좌우 패딩) = 556px */
+            .form-box {
+                max-width: 90%;
+            }
+        }
+        .form-box h4 {
+            color: #003478;
+            margin-bottom: 20px;
+        }
+        .form-box input[type="text"], .form-box textarea, .form-box button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .form-box input[type="text"] {
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-box textarea {
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: 200px; /* 텍스트 영역의 높이를 더 크게 설정 */
+            resize: vertical; /* 세로 방향으로만 크기 조절 가능 */
+        }
+        .form-box button {
+            font-size: 16px;
+            border: none;
+            background: #003478;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-box button:hover {
+            background: #002855;
+        }
+   </style>
+</head>
+<body>     
+    <%- include('commonNav.ejs'); %>
+
+    <form class="form-box" action="/community/add" method="POST">
+        <h4>글쓰기</h4>
+        <input type="text" name="title" placeholder="제목을 입력하세요">
+        <textarea name="content" placeholder="내용을 입력하세요"></textarea>
+        <button type="submit">전송</button>
+    </form> 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

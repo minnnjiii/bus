@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+     <!-- Chart.js 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title> 데이터 분석 페이지  </title>
+    <style>
+      /* 스타일링 */
+      .chart-container {
+          width: 80%;
+          margin: auto;
+          padding: 20px;
+      }
+      
+    </style>
+    
+
+</head>
+<body>    
+  <%- include('commonNav.ejs') %>
+  <script>
+    const reservations = <%- JSON.stringify(reservation) %>;
+  </script>
+  
+  <h1 style="text-align: center; ">데이터 분석</h1>
+  <!-- 시간대별 예약 현황 그래프 -->
+  <div class="chart-container">
+      <canvas id="timeChart"></canvas>
+  </div>
+  <!-- 정류장별 이용 현황 그래프 -->
+  <div class="chart-container">
+      <canvas id="stationChart"></canvas>
+  </div>
+  <!-- 좌석별 인기도 히트맵 -->
+  <div class="chart-container">
+      <canvas id="seatChart"></canvas>
+  </div>
+
+  <script>
+    // 시간대별 예약 현황 그래프
+
+    // 시간대별 예약 수를 계산하는 함수
+    function countReservationsByTime(reservations) {
+    const counts = {};
+    reservations.forEach(res => {
+        // "12:00"에서 "12"를 추출하고 숫자로 변환
+        const hour = parseInt(res.selectedTime.split(":")[0], 10);
+        if (!isNaN(hour)) {
+        counts[hour] = (counts[hour] || 0) + 1;
+        }
+    });
+    return counts;
+    }
+
+    const timeCounts = countReservationsByTime(reservations);
+
+    // 차트 레이블과 데이터 배열 생성
+    const hours = Array.from(new Array(15), (val, index) => 8 + index); // 8부터 22까지의 시간 배열
+    const labels = hours.map(hour => `${hour}:00`);
+    const data = hours.map(hour => timeCounts[hour] || 0); // 시간대별 예약 수, 없으면 0
+
+    // 차트 생성
+    const timeChartContext = document.getElementById('timeChart').getContext('2d');
+    const timeChart = new Chart(timeChartContext, {
+        type: 'bar',
+        data: {
+            labels: labels, 
+            datasets: [{
+                label: '시간대별 예약 수',
+                data: data, 
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+
+    // 정류장별 이용 현황 그래프
+   function countPassengersByStation(reservations) {
+    const stationCounts = {};
+    reservations.forEach(res => {
+        const station = res.boardingStation;
+        stationCounts[station] = (stationCounts[station] || 0) + 1;
+    });
+    return stationCounts;
+    }
+
+    const passengerCounts = countPassengersByStation(reservations);
+
+    // 정류장 이름과 그에 해당하는 승객 수 추출
+    const stations = Object.keys(passengerCounts);
+    const counts = Object.values(passengerCounts);
+
+    // 차트 생성
+    const stationChartContext = document.getElementById('stationChart').getContext('2d');
+    new Chart(stationChartContext, {
+        type: 'bar',
+        data: {
+            labels: stations, // 정류장 이름들 (예: ['설립기념탑', '미대', '도서관'])
+            datasets: [{
+                label: '정류장별 탑승 승객 수',
+                data: counts, // 각 정류장별 승객 수 (예: [20, 30, 40])
+                backgroundColor: 'rgba(255, 206, 86, 0.5)',
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+
+    // 좌석별 인기도 히트맵
+
+    function countReservationsBySeat(reservations) {
+    const seatCounts = {};
+    reservations.forEach(res => {
+        const seat = res.seatNumber;
+        seatCounts[seat] = (seatCounts[seat] || 0) + 1;
+    });
+    return seatCounts;
+    }
+
+    const seatCounts = countReservationsBySeat(reservations);
+
+    // 차트 데이터 생성
+    const seatData = Object.keys(seatCounts).map(seat => {
+        return {
+            x: Number(seat),
+            y: seatCounts[seat],
+            r: Math.sqrt(seatCounts[seat]) * 2 // 예약 횟수에 비례하는 버블 크기
+        };
+    });
+
+    // 차트 생성
+    const seatChartContext = document.getElementById('seatChart').getContext('2d');
+    new Chart(seatChartContext, {
+        type: 'bubble',
+        data: {
+            datasets: [
+                {
+                    label: '좌석 인기도',
+                    data: seatData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)'
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    scaleLabel: { display: true, labelString: '예약 횟수' }
+                },
+                x: {
+                    beginAtZero: true,
+                    scaleLabel: { display: true, labelString: '좌석 번호' }
+                    
+                }
+            }
+        }
+    });
+
+
+
+</script>
+<script>
+    
+  </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+</body>
+</html>

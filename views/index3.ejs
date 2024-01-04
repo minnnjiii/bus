@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> 조선대학교 셔틀버스 웹앱 </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <style>
+
+  </style>
+
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/home" style="font-size: 13px;"> Chosun University Shuttle Bus </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" href="/timetable"> 버스 시간표 </a>
+          <a class="nav-link active" href="/seatRes"> 좌석 예약 </a>
+          <a class="nav-link active" href="/community"> 누리 광장 </a>
+          <a class="nav-link active" href="/Mypage"> 정보 무늬 </a>
+          <a class="nav-link disabled" aria-disabled="true"> ♡ </a>
+          <a class="nav-link" href="/administration"> 관리자 전용 </a>
+          
+        </div>
+        
+      </div>
+    </div>
+  </nav>
+
+<div id="map" style=" width: 100%; height: 85vh;"> </div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2703149e6833fa3cf1db71f04ba74b23"></script>
+<script>
+  var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = { 
+          center: new kakao.maps.LatLng(35.141364,126.931465), // 지도의 중심좌표
+          level: 4 // 지도의 확대 레벨
+      };
+
+  var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+  var imageSrc = 'https://cdn-icons-png.flaticon.com/128/10533/10533672.png', // 마커이미지의 주소입니다    
+      imageSize = new kakao.maps.Size(20, 25), // 마커이미지의 크기입니다
+      imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        
+  // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+      markerPosition = new kakao.maps.LatLng(<%= data[0].lat %>, <%= data[0].lon %>);
+
+  // 마커를 생성합니다
+  var marker = new kakao.maps.Marker({
+      position: markerPosition, 
+      image: markerImage // 마커이미지 설정 
+  });
+
+  // 마커가 지도 위에 표시되도록 설정합니다
+  marker.setMap(map);  
+
+  // 클라이언트 측 JavaScript 코드
+  function updateMarkerPosition() {
+    // 서버에 데이터 요청
+    fetch('/api/getLatestData') // 서버의 데이터를 가져오는 API 엔드포인트를 호출
+      .then(response => response.json())
+      .then(data => {
+        // 데이터를 기반으로 마커의 위치 업데이트
+        const lat = data.lat;
+        const lon = data.lon;
+        const newMarkerPosition = new kakao.maps.LatLng(lat, lon);
+
+        if (!marker) {
+          marker = new kakao.maps.Marker({
+            position: newMarkerPosition,
+            map: null,
+          });
+        } else {
+          marker.setPosition(newMarkerPosition);
+        }
+      })
+      .catch(error => {
+        console.error('Error updating marker position:', error);
+      });
+  }
+
+  // 주기적으로 마커 위치 업데이트
+  setInterval(updateMarkerPosition, 1000); // 1초마다 업데이트 (원하는 주기로 설정)
+
+</script>
+<script type="module" src="src/main.js"></script>   
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

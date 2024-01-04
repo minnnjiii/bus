@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title> 누리 광장  </title>
+    <style>
+        input,div {
+        box-sizing: border-box;
+        }
+        .form-box {
+        background : white;
+        padding : 25px;
+        margin: 20px;
+        border-radius: 8px;
+        }
+        .form-box input {
+        padding : 10px;
+        font-size: 16px;
+        width: 100%;
+        border: 1px solid black;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        }
+        .form-box button {
+        padding: 10px;
+        border : none;
+        background : lightgrey;
+        border-radius: 5px;
+        }
+   </style>
+    
+
+</head>
+<body  class = "grey-bg" >     
+  <%- include('commonNav.ejs') %>
+
+    <form class="form-box" action = "/community/edit?_method=PUT"
+    method = "POST">
+        <h4> 수정하기 </h4>
+        <input name = "id" value="<%= result._id %>" style="display: none;">
+        <input name = "title" value="<%= result.title %>">
+        <input name = "content" value=" <%= result.content %> ">
+        <button type="submit"> 저장 </button>
+    </form> 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+</body>
+</html>

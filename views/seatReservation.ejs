@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  
+    <title> 좌석 예약 </title>
+    
+    <link rel="stylesheet" href="seatStyle.css">
+</head>
+<body>    
+    <%- include('commonNav.ejs') %>
+
+    <main>
+
+        <section>
+            <div id="timeNav">
+                <button class="timeBtn" data-time="08:00">08:00</button>
+                <button class="timeBtn" data-time="09:00">09:00</button>
+                <button class="timeBtn" data-time="10:00">10:00</button>
+                <button class="timeBtn" data-time="11:00">11:00</button>
+                <button class="timeBtn" data-time="12:00">12:00</button>
+                <button class="timeBtn" data-time="13:00">13:00</button>
+                <button class="timeBtn" data-time="14:00">14:00</button>
+                <button class="timeBtn" data-time="15:00">15:00</button>
+                <button class="timeBtn" data-time="16:00">16:00</button>
+                <button class="timeBtn" data-time="17:00">17:00</button>
+                <button class="timeBtn" data-time="18:00">18:00</button>
+                <button class="timeBtn" data-time="19:00">19:00</button>
+                <button class="timeBtn" data-time="20:00">20:00</button>
+                <button class="timeBtn" data-time="21:00">21:00</button>
+                <button class="timeBtn" data-time="22:00">22:00</button>
+            </div>
+            <br>
+            
+            <div id="detailedTimeNav"  class="timeNav" ></div>
+            <br>
+
+            <div id = "boarding-station">
+                
+                <button  class="station-btn" value="설립기념탑"> 설립기념탑 </button>
+                <button  class="station-btn" value="미대"> 미대 </button>
+                <button class="station-btn" value="도서관"> 도서관 </button>
+                <button  class="station-btn" value="IT융합대학"> IT융합대학 </button>
+                <button  class="station-btn" value="본관 남쪽"> 본관 남쪽 </button>
+                <button  class="station-btn" value="본관 북쪽"> 본관 북쪽 </button>
+                <button  class="station-btn" value="학생회관"> 학생회관 </button>
+            
+            </div>
+            <br>
+            <div id = "arrival-station">
+                
+                <button class="station-btn" value="설립기념탑"> 설립기념탑 </button>
+                <button class="station-btn" value="미대"> 미대 </button>
+                <button class="station-btn" value="도서관"> 도서관 </button>
+                <button class="station-btn" value="IT융합대학"> IT융합대학 </button>
+                <button class="station-btn" value="본관 남쪽"> 본관 남쪽 </button>
+                <button class="station-btn" value="본관 북쪽"> 본관 북쪽 </button>
+                <button class="station-btn" value="학생회관"> 학생회관 </button>
+            
+            </div>
+
+
+            <br>
+            <div class="centered-container">
+                <label id="selected-time-label"> </label>
+            </div>
+
+        </section>
+
+        <section>
+            <div id="seatsContainer"></div>
+        
+        
+        </section>
+       
+        <section id="seat-map">
+            <h2>  </h2>
+            <br>
+            <div id="seats">
+            
+                </div>
+
+            </div>
+        </section>
+
+        <section id="reservation-form">
+            <h2> </h2>
+            <div class="form-container"> </div>
+                <form>
+                    <label for="nickname"> 이름 : <%= user.name %> </label>
+                    <br>
+                    <label for="name"> 학번 :</label>
+                    <input type="text" id="name" value = <%= user.studentId %> name="name" required>
+                    <br>
+                    <label for="seat-number">좌석 번호:</label>
+                    <input type="text" id="seat-number" name="seat-number" readonly>
+                    <br>
+                    <label for="selected-time"> 시간: </label>
+                    <input type="text" id="selected-time" name="selected-time" readonly>     
+                    <br>
+                    <br>
+                    <button type="button" id="reserve-button">좌석 예약</button>
+                </form>
+            </div>
+            
+        </section>
+    </main>
+
+    <script>
+        // 시간 선택시 서버로부터 해당 시간의 좌석 데이터를 가져오기
+        document.querySelectorAll('.timeBtn').forEach(button => {
+            button.addEventListener('click', function() {
+                const hour = this.getAttribute('data-time').split(':')[0]; // '08:00'에서 '08'만 추출
+                displayDetailedTimes(hour);
+            });
+        });
+
+        function displayDetailedTimes(hour) {
+            const detailedTimeNav = document.getElementById('detailedTimeNav');
+            detailedTimeNav.innerHTML = ''; // 이전에 표시된 세부 시간들을 초기화
+
+            for (let min = 0; min < 60; min += 10) {
+                const time = `${hour}:${min.toString().padStart(2, '0')}`; // '08:00', '08:10' 등의 형식
+                const timeButton = document.createElement('button');
+                timeButton.textContent = time;
+                timeButton.className = 'detailedTimeBtn';
+                detailedTimeNav.appendChild(timeButton);
+
+                timeButton.addEventListener('click', () => {
+                    const selectedTimeInput = document.getElementById('selected-time');
+                    selectedTimeInput.value = time;
+                    
+                    
+                    
+                    const selectedTimeLabel = document.getElementById('selected-time-label');
+                    const formattedTime = time.replace(':', '시 ') + '분 버스';
+                    selectedTimeLabel.textContent = `${formattedTime}`;
+
+
+                    
+
+                    });
+        }}
+
+    </script>
+
+    <script>
+        // 좌석 선택 및 예약 로직 추가
+        const seatsContainer = document.getElementById('seats');
+        const seatNumberInput = document.getElementById('seat-number');
+        const reserveButton = document.getElementById('reserve-button');
+        const seats = [];
+        
+
+        // 좌석 생성 및 이벤트 처리
+        async function loadSeats() {
+
+            // 정류장 순서 매핑
+            const stationOrder = {
+            "설립기념탑" : 1,
+            "미대" : 2,
+            "도서관" : 3,
+            "IT융합대학" : 4,
+            "본관 남쪽" : 5,
+            "복관 북쪽" : 6,
+            "학생회관" : 7
+            }
+            const selectedTime = document.getElementById('selected-time').value; // 선택한 시간 가져오기
+            const selectedBoardingStation = getSelectedStation('boarding-station');
+            const selectedArrivalStation = getSelectedStation('arrival-station');
+
+            if (stationOrder[selectedBoardingStation] >= stationOrder[selectedArrivalStation]) {
+                alert("해당 노선은 지원하지 않는 노선입니다. \n출발 정류장은 도착 정류장보다 이전에 있어야합니다.");
+                return;
+            }
+            try {
+                
+                seatsContainer.innerHTML = ''; // 기존의 좌석들 초기화
+                let seatNumber = 1; // 좌석 번호 초기화
+              
+                
+                if (selectedBoardingStation && selectedArrivalStation) {
+                    
+                    for (let row = 1; row <= 9; row++) {
+                    for (let col = 1; col <= 4; col++) {
+                        const seat = document.createElement('div');
+                        seat.className = 'seat';
+                        seat.textContent = seatNumber++;
+                        seatsContainer.appendChild(seat);
+                        seats.push(seat);
+
+                        
+                        seat.addEventListener('click', () => {
+                            seatNumberInput.value = seat.textContent;
+                            seats.forEach((s) => s.classList.remove('selected'));
+                            seat.classList.add('selected');
+                            
+                        });
+
+                        if (col === 2 || col === 4) {
+                            const space = document.createElement('span');
+                            space.textContent = '\u00A0\u00A0\u00A0\u00A0'; // 빈 칸 추가
+                            seatsContainer.appendChild(space);
+                        }
+
+                        if (col === 4) {
+                            const lineBreak = document.createElement('br');
+                            seatsContainer.appendChild(lineBreak);
+                        }
+                    }
+
+                    
+                    }
+                // 예약된 좌석 표시
+                markReservedSeats(selectedTime,selectedBoardingStation,selectedArrivalStation);
+   
+
+
+                
+            }
+                document.getElementById('reservation-form').style.display = 'block';
+
+            } catch (error) {
+                console.error('좌석 정보 로드 중 오류 발생:', error);
+            }
+        }
+        // 선택된 정류장 가져오기
+        function getSelectedStation(stationId) {
+            const selectedButton = document.querySelector(`#${stationId} .station-btn.selected-station`);
+            return selectedButton ? selectedButton.value : null;
+        }
+
+
+    </script>
+    <script>
+
+        // 승차 및 하차 정류장 선택 처리
+        let selectedBoardingStation = null;
+        let selectedArrivalStation = null;
+        
+        document.querySelectorAll('#boarding-station .station-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                selectedBoardingStation = this.value;
+                document.querySelectorAll('#boarding-station .station-btn').forEach(btn => btn.classList.remove('selected-station'));
+                this.classList.add('selected-station');
+
+                // 출발 정류장과 하차 정류장을 선택한 후 좌석 생성
+                if (selectedBoardingStation && selectedArrivalStation) {
+                    loadSeats();
+                }
+
+            });
+        });
+
+        document.querySelectorAll('#arrival-station .station-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                selectedArrivalStation = this.value;
+                // 선택된 버튼 강조 표시 (옵션)
+                document.querySelectorAll('#arrival-station .station-btn').forEach(btn => btn.classList.remove('selected-station'));
+                this.classList.add('selected-station');
+
+                // 출발 정류장과 하차 정류장을 선택한 후 좌석 생성
+                if (selectedBoardingStation && selectedArrivalStation) {
+                    loadSeats();
+                }
+
+            });
+        });
+
+        // 좌석 예약 버튼 클릭 시
+        reserveButton.addEventListener('click', () => {
+        const selectedSeat = document.querySelector('.seat.selected');
+        const name = document.getElementById('name').value;
+
+        if (selectedSeat && name && selectedBoardingStation && selectedArrivalStation) {
+            const seatNumber = selectedSeat.textContent;
+            const selectedTime = document.getElementById('selected-time').value; // 선택한 시간 가져오기
+
+            // 승차 및 하차 정류장 정보를 포함한 예약 데이터
+            const reservationData = { seatNumber, name, selectedTime, boardingStation: selectedBoardingStation, arrivalStation: selectedArrivalStation };
+
+            // 서버로 예약 데이터 전송
+            fetch('/api/reserveSeat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reservationData),
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text(); // 또는 response.json() 응답이 JSON 형식인 경우
+                } else {
+                    throw new Error('Server responded with an error');
+                }
+            })
+            .then(data => {
+                console.log('예약 성공:', data);
+                alert('예약이 완료되었습니다.');
+                selectedSeat.classList.add('reserved'); // 해당 좌석을 예약된 상태로 표시
+            
+            })
+            .catch((error) => {
+                console.error('예약 실패:', error);
+                alert('예약에 실패했습니다.');
+            });
+        } else {
+            alert('모든 필드를 채워주세요 (좌석, 이름, 시간, 승차 및 하차 정류장)');
+        }
+    });
+    const selectedTime = document.getElementById('selected-time').value; // 선택한 시간 가져오기
+    async function markReservedSeats(selectedTime,boardingStation, arrivalStation) {
+        try {
+            const timestamp = new Date().getTime(); // 현재 타임스탬프를 생성
+            const response = await fetch(`/api/getReservedSeats?selectedTime=${selectedTime}&_=${timestamp}`);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            
+            // 정류장 순서 매핑
+            const stationOrder = {
+            "설립기념탑" : 1,
+            "미대" : 2,
+            "도서관" : 3,
+            "IT융합대학" : 4,
+            "본관 남쪽" : 5,
+            "복관 북쪽" : 6,
+            "학생회관" : 7
+            }
+            const reservedSeats = await response.json();
+            // 모든 'seat' 클래스를 가진 DOM 엘리먼트를 가져옴
+            const seats = document.querySelectorAll('.seat');
+
+            seats.forEach(seat => {
+            const seatNumber = seat.textContent;
+            seat.classList.remove('reserved', 'selected');
+
+            // 서버로부터 가져온 예약된 좌석 데이터와 비교
+            const isReserved = reservedSeats.some(reservedSeat => 
+                reservedSeat.seatNumber === seatNumber && 
+                stationOrder[boardingStation] <= stationOrder[reservedSeat.arrivalStation]
+            );
+
+            // 예약된 좌석에 대해 'reserved' 클래스 추가
+            if (isReserved) {
+                seat.classList.add('reserved');
+            } else {
+                // 사용자가 선택한 출발 정류장보다 예약된 하차 정류장이 뒤에 있는 경우 'available' 클래스 추가
+                
+            }
+        });
+            } catch (error) {
+                console.error('Error fetching reserved seats:', error);
+         }
+    }
+
+    
+
+
+  
+
+
+
+    </script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+</body>
+</html>

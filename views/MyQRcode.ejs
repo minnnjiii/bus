@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>학생 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+         body, html {
+            height: 100%;
+            margin: 0;
+            padding-top: 50px;
+        }
+        #navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; 
+        }
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100% - 50px);
+        }
+        .card {
+            width: 300px;
+            background-color: #fff;
+            border-radius: 20px; /* 모서리 둥글기 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            text-align: center;
+        }
+        .card-header {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #003478; /* 조선대학교 색상 */
+        }
+        .card-body {
+            margin-bottom: 20px;
+        }
+        .student-info {
+            margin-top: 10px;
+            text-align: left;
+        }
+        .student-info .label {
+            font-weight: bold;
+        }
+        .qr-code {
+            border: 1px solid #000; /* QR 코드 테두리 (임시) */
+            display: inline-block;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <%- include('commonNav.ejs') %>
+    </div>
+
+    <div class="content">
+    <div class="card">
+        <div class="card-header" style="background-color:  #003478;  color: white;">조선대학교</div>
+        <div class="card-body">
+            <img src="<%= qrCode %>" alt="My QR Code" class="img-fluid mt-3"  >
+            
+        </div>
+        <div class="student-info">
+            <div class="label">이름</div>
+            <div><%= user.name %></div>
+            <div class="label">학번</div>
+            <div><%= user.studentId %></div>
+            <% if (bus && bus.selectedTime) { %>
+                <div class="label">예약 시간</div>
+                <div><%= bus.selectedTime %></div>
+            <% } %>
+            <% if (bus && bus.seatNumber) { %>
+                <div class="label">예약 좌석</div>
+                <div><%= bus.seatNumber %>번</div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

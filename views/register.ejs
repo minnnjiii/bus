@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 회원가입 페이지 </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            margin: auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            
+        }
+        input[type=text],
+        input[type=password],
+        input[type=email],
+        input[type=number] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+
+
+
+
+
+<body>
+    <%- include('commonNav.ejs') %>
+    <div class="form-container">
+        <h2> 가입 </h2>
+        <form id = "loginForm" action="/register" method="POST">
+            <input type="text" name="name" id="name" placeholder="닉네임" required>
+            <input type="number" name="studentId" id="studentId" placeholder="학번" required>
+            <input type="email" name="email" id = "email" placeholder="이메일" required>
+            <input name="username" type="text" id="username" placeholder="아이디" required>
+            <input name="password" type="password" id="password" placeholder="비밀번호" required>
+            <button type="submit">전송</button>
+        </form> 
+    </div>
+
+    
+</body>
+</html>

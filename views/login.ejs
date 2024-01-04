@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 페이지 </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .btn-login {
+            background-color: #5cb85c;
+            color: white;
+        }
+        .btn-login:hover {
+            background-color: #4cae4c;
+        }
+        .btn-signup {
+            background-color: #f0ad4e;
+            color: white;
+        }
+        .btn-signup:hover {
+            background-color: #ec971f;
+        }
+        </style>
+</head>
+
+
+
+
+
+<body>
+    
+    <div class = "login-container">
+        <h2>로그인</h2>
+        <form   action="/login" method = "POST">
+            <input name="username" type="text" id="username" placeholder="사용자 이름" required>
+            <input name="password" type="password" id="password" placeholder="비밀번호" required>
+            <button type="submit" class="btn-login">로그인</button>
+        </form> 
+         <button onclick="location.href='/register'" class="btn-signup">회원가입</button>
+    </div>
+        
+    
+</body>
+</html>

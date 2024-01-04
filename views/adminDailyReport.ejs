@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title> 일별 보고서  </title>
+    <style>
+      .report-container {
+          width: 80%;
+          margin: 0 auto;
+          text-align: center;
+      }
+
+      .report-content {
+          margin-top: 20px;
+          border-top: 1px solid #ccc;
+          padding-top: 20px;
+      }
+    </style>
+    
+
+</head>
+<body>    
+  <script>
+    const reservations = <%- JSON.stringify(reservation) %>;
+  </script>
+  <%- include('commonNav.ejs') %>
+  <div class="report-container">
+    <h1>일별 보고서</h1>
+    <label for="reportDate">날짜 선택:</label>
+    <input type="date" id="reportDate" name="reportDate">
+    <button onclick="generateReport()">보고서 생성</button>
+
+    <div id="reportContent" class="report-content">
+        <!-- 여기에 보고서 내용이 표시됩니다 -->
+    </div>
+  </div>
+
+  <script>
+      function generateReport() {
+          const selectedDate = document.getElementById('reportDate').value;
+          const reportContent = document.getElementById('reportContent');
+
+          if (selectedDate) {
+              // 서버로부터 받은 reservations 데이터를 사용
+              const filteredReservations = reservations.filter(reservation => {
+                  const reservationDate = new Date(reservation.currentDateTime).toLocaleDateString();
+                  const selectedDateFormatted = new Date(selectedDate).toLocaleDateString();
+                  return reservationDate === selectedDateFormatted;
+              });
+
+              if (filteredReservations.length > 0) {
+                  let reportHtml = `<h2>보고서: ${selectedDate}</h2>`;
+                  reportHtml += '<ul>';
+                  filteredReservations.forEach(res => {
+                      reportHtml += `<li>좌석 번호: ${res.seatNumber}, 이름: ${res.name}, 시간: ${res.selectedTime}, 출발 정류장: ${res.boardingStation}, 도착 정류장: ${res.arrivalStation}</li>`;
+                  });
+                  reportHtml += '</ul>';
+                  reportContent.innerHTML = reportHtml;
+              } else {
+                  reportContent.innerHTML = `<h2>보고서: ${selectedDate}</h2><p>이 날짜에 대한 예약 정보가 없습니다.</p>`;
+              }
+          } else {
+              reportContent.innerHTML = '<p>날짜를 선택해주세요.</p>';
+          }
+      }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+</body>
+</html>
