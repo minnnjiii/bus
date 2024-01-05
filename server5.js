@@ -90,7 +90,7 @@ app.get('/home', async (req, res) => {
     const collection = db.collection('bus');
     // bus 컬렉션에서 데이터 조회
     const data = await collection.find({}).sort({ _id: -1 }).limit(1).toArray();
-    // 조회한 데이터를 index.ejs에 전달하여 렌더링함
+    // 조회한 데이터를 index3.ejs에 전달하여 렌더링함
     res.render('index3', { data });
     // console에 데이터를 띄우기
     console.log('Data from "bus" collection:', data);
